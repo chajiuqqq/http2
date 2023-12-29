@@ -16,8 +16,8 @@ var html = template.Must(template.New("https").Parse(`
   <title>Https Test</title>
 </head>
 <body>
-  <h1 style="color:red;">Welcome, Ginner!</h1>
-  <img src="www/10MB.jpg"></img>
+  <h1 style="color:red;">Img:{{ .filename }}</h1>
+  <img src="www/{{ .filename }}"></img>
 </body>
 </html>
 `))
@@ -34,9 +34,10 @@ func main() {
 	r.SetHTMLTemplate(html)
 	r.Static("/www", "./www")
 
-	r.GET("/welcome", func(c *gin.Context) {
+	r.GET("/html/:filename", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "https", gin.H{
 			"status": "success",
+			"filename": c.Param("filename"),
 		})
 	})
 
